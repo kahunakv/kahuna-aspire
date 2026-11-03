@@ -1,0 +1,75 @@
+# Kahuna for .NET Aspire
+
+.NET Aspire integrations for [Kahuna](https://github.com/kahunakv/kahuna), a distributed lock manager,
+key-value store and sequencer.
+
+| Package | Use it in | What it does |
+| --- | --- | --- |
+| [`Kahuna.Aspire.Hosting`](src/Kahuna.Aspire.Hosting) | The AppHost | Runs a Kahuna node as a container resource, with a health check and a data volume. |
+| [`Kahuna.Aspire.Client`](src/Kahuna.Aspire.Client) | Each service | Registers a `KahunaClient` from the connection string, with a health check, spans and metrics. |
+
+## Quick start
+
+AppHost:
+
+```csharp
+var kahuna = builder.AddKahuna("kahuna").WithDataVolume();
+
+builder.AddProject<Projects.Api>("api")
+       .WithReference(kahuna)
+       .WaitFor(kahuna);
+```
+
+Service:
+
+```csharp
+builder.AddKahunaClient("kahuna");
+```
+
+## What the Aspire dashboard shows
+
+- **Client spans.** One span for each operation that a `KahunaClient` sends to a node (`GetKeyValue`,
+  `AcquireLock`, `NextSequenceValue` and so on), under the request that caused it. The span has
+  `server.address` and `server.port`, so the dashboard links it to the Kahuna resource.
+- **Client metrics.** `kahuna.client.operation.duration` for each operation, and the routing-cache
+  counters.
+- **Server telemetry.** The node's `Kahuna` and `Kommander` meters, its request spans and its logs.
+  The server exports them only when Aspire sets `OTEL_EXPORTER_OTLP_ENDPOINT`.
+
+The client telemetry and the server export need Kahuna 1.16.0 or later. The hosting package pins
+image `kahunakv/kahuna:1.15.0` until that release; with that image, the node runs but sends no telemetry.
+
+## Sample
+
+`samples/` holds an AppHost with one Kahuna node and two replicas of an API service. The API shows a
+key-value store, a job under a distributed lock, a cluster-wide sequence, and a rate limiter that
+shares one budget between the replicas.
+
+```bash
+dotnet run --project samples/Kahuna.Aspire.AppHost --launch-profile http
+```
+
+To run a server image built from a local Kahuna checkout:
+
+```bash
+# in the Kahuna checkout
+docker build -f docker/Dockerfile.standalone -t kahunakv/kahuna:local .
+
+# here
+dotnet run --project samples/Kahuna.Aspire.AppHost --launch-profile http -- --Kahuna:ImageTag=local
+```
+
+## Building against a local Kahuna checkout
+
+With a Kahuna checkout at `../kahuna`, the projects reference its `Kahuna.Client` and
+`Kahuna.Client.AspNetCore` source instead of the packages, so a change on both sides builds and
+tests together. Set `-p:KahunaRepoRoot=<path>` for another location, or `-p:UseLocalKahuna=false`
+to use the packages.
+
+```bash
+dotnet build Kahuna.Aspire.slnx
+dotnet test tests/Kahuna.Aspire.Hosting.Tests
+dotnet test tests/Kahuna.Aspire.Client.Tests
+```
+
+The tests need no Docker and no running node.

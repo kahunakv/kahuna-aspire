@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/samples/">
+    <Project Path="samples/Kahuna.Aspire.ApiService/Kahuna.Aspire.ApiService.csproj" />
+    <Project Path="samples/Kahuna.Aspire.AppHost/Kahuna.Aspire.AppHost.csproj" />
+    <Project Path="samples/Kahuna.Aspire.ServiceDefaults/Kahuna.Aspire.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Kahuna.Aspire.Client/Kahuna.Aspire.Client.csproj" />
+    <Project Path="src/Kahuna.Aspire.Hosting/Kahuna.Aspire.Hosting.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Kahuna.Aspire.Client.Tests/Kahuna.Aspire.Client.Tests.csproj" />
+    <Project Path="tests/Kahuna.Aspire.Hosting.Tests/Kahuna.Aspire.Hosting.Tests.csproj" />
+  </Folder>
+</Solution>

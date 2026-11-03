@@ -1,0 +1,18 @@
+<Project>
+
+  <!-- A project asks for Kahuna by adding a KahunaReference item (Kahuna.Client or
+       Kahuna.Client.AspNetCore). It becomes a project reference into the local checkout or a package
+       reference, as UseLocalKahuna decides. -->
+  <ItemGroup Condition="'$(UseLocalKahuna)' == 'true'">
+    <ProjectReference Include="@(KahunaReference->'$(KahunaRepoRoot)%(Identity)/%(Identity).csproj')" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseLocalKahuna)' != 'true'">
+    <PackageReference Include="@(KahunaReference)" Version="$(KahunaPackageVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <None Include="$(MSBuildProjectDirectory)/README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>
