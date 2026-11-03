@@ -36,8 +36,9 @@ builder.AddKahunaClient("kahuna");
 - **Server telemetry.** The node's `Kahuna` and `Kommander` meters, its request spans and its logs.
   The server exports them only when Aspire sets `OTEL_EXPORTER_OTLP_ENDPOINT`.
 
-The client telemetry and the server export need Kahuna 1.16.0 or later. The hosting package pins
-image `kahunakv/kahuna:1.15.0` until that release; with that image, the node runs but sends no telemetry.
+The client package needs `Kahuna.Client` 1.15.1 or later. The server export needs a server image
+built from 1.15.1 or later. The hosting package pins image `kahunakv/kahuna:1.15.0` until a 1.15.1
+image is published; with that image, the node runs but sends no telemetry.
 
 ## Sample
 
@@ -64,7 +65,8 @@ dotnet run --project samples/Kahuna.Aspire.AppHost --launch-profile http -- --Ka
 With a Kahuna checkout at `../kahuna`, the projects reference its `Kahuna.Client` and
 `Kahuna.Client.AspNetCore` source instead of the packages, so a change on both sides builds and
 tests together. Set `-p:KahunaRepoRoot=<path>` for another location, or `-p:UseLocalKahuna=false`
-to use the packages.
+to use the packages. Without the checkout, the sample API also needs `Kahuna.Client.AspNetCore`
+1.15.1, which is not on NuGet yet; the integration packages and their tests build without it.
 
 ```bash
 dotnet build Kahuna.Aspire.slnx

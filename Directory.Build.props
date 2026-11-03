@@ -12,13 +12,13 @@
     <OpenTelemetryVersion>1.20.1</OpenTelemetryVersion>
     <MicrosoftExtensionsVersion>10.0.14</MicrosoftExtensionsVersion>
 
-    <!-- The integrations need the DI registration and telemetry that Kahuna.Client gained after 1.15.0.
+    <!-- The integrations need the DI registration and telemetry that Kahuna.Client gained in 1.15.1.
          With a Kahuna checkout next to this repository, the projects build against its source, so a
          change on both sides can be tested before either is released. Without one, they use the
          package. Pass -p:UseLocalKahuna=false to force the package. -->
     <KahunaRepoRoot Condition="'$(KahunaRepoRoot)' == ''">$(MSBuildThisFileDirectory)../kahuna/</KahunaRepoRoot>
     <UseLocalKahuna Condition="'$(UseLocalKahuna)' == '' and Exists('$(KahunaRepoRoot)Kahuna.Client/Kahuna.Client.csproj')">true</UseLocalKahuna>
-    <KahunaPackageVersion>1.16.0</KahunaPackageVersion>
+    <KahunaPackageVersion>1.15.1</KahunaPackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
