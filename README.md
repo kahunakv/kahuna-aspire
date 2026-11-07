@@ -86,3 +86,13 @@ dotnet test tests/Kahuna.Aspire.Client.Tests
 
 These two test projects need no Docker and no running node. `tests/Kahuna.Aspire.Cluster.Tests` starts
 the cluster example with real containers, so it needs Docker.
+
+## NuGet packages
+
+```bash
+scripts/set-version.sh 0.2.0             # set the version in Directory.Build.props, then pack
+scripts/set-version.sh 0.2.0 --dry-run   # show what would change, touch nothing
+```
+
+The script writes the packages to `nupkg/`. They always depend on the released `Kahuna.Client`
+package, also when a local checkout is present. The script does not upload them.

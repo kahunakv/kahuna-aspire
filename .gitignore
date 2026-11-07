@@ -6,4 +6,5 @@ obj/
 *.DotSettings.user
 TestResults/
 artifacts/
+nupkg/
 .DS_Store
