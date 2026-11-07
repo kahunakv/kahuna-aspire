@@ -3,7 +3,7 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>Kahuna.Aspire.Hosting</PackageId>
-    <Description>.NET Aspire hosting integration for Kahuna: run a Kahuna node as a container resource in an Aspire AppHost.</Description>
+    <Description>.NET Aspire hosting integration for Kahuna: run a Kahuna node or a cluster of nodes as container resources in an Aspire AppHost.</Description>
     <PackageTags>aspire;hosting;kahuna;distributed lock;key-value;raft</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>

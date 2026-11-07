@@ -1,0 +1,17 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.6.4">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- The dashboard and the orchestrator come from NuGet packages, so the example runs with plain
+         `dotnet run` and needs no Aspire CLI. ASPIRE010 only reports that choice. -->
+    <AspireUseCliBundle>false</AspireUseCliBundle>
+    <NoWarn>$(NoWarn);ASPIRE010</NoWarn>
+    <UserSecretsId>0f6a7c32-5d1e-4b8a-9e24-7c3b1a6d8f50</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Kahuna.Aspire.Hosting\Kahuna.Aspire.Hosting.csproj" IsAspireProjectResource="false" />
+    <ProjectReference Include="..\ClusterExample.Api\ClusterExample.Api.csproj" />
+  </ItemGroup>
+
+</Project>

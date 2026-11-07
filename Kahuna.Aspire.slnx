@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/examples/">
+    <Project Path="examples/ClusterExample/ClusterExample.Api/ClusterExample.Api.csproj" />
+    <Project Path="examples/ClusterExample/ClusterExample.AppHost/ClusterExample.AppHost.csproj" />
+  </Folder>
   <Folder Name="/samples/">
     <Project Path="samples/Kahuna.Aspire.ApiService/Kahuna.Aspire.ApiService.csproj" />
     <Project Path="samples/Kahuna.Aspire.AppHost/Kahuna.Aspire.AppHost.csproj" />
@@ -10,6 +14,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Kahuna.Aspire.Client.Tests/Kahuna.Aspire.Client.Tests.csproj" />
+    <Project Path="tests/Kahuna.Aspire.Cluster.Tests/Kahuna.Aspire.Cluster.Tests.csproj" />
     <Project Path="tests/Kahuna.Aspire.Hosting.Tests/Kahuna.Aspire.Hosting.Tests.csproj" />
   </Folder>
 </Solution>

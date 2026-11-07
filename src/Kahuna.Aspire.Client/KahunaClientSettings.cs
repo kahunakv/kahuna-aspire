@@ -27,7 +27,10 @@ public sealed class KahunaClientSettings
     /// <summary>When true, no health check is registered. The default is false.</summary>
     public bool DisableHealthChecks { get; set; }
 
-    /// <summary>How long the health check waits for the node. Unlimited when not set.</summary>
+    /// <summary>
+    /// How long the health check waits in total. Unlimited when not set. With more than one endpoint,
+    /// each call to a node also has a limit of 2 seconds.
+    /// </summary>
     public TimeSpan? HealthCheckTimeout { get; set; }
 
     /// <summary>When true, the client spans are not exported. The default is false.</summary>

@@ -8,6 +8,7 @@
 using Kahuna.Aspire.Client;
 using Kahuna.Client;
 using Kahuna.Client.Routing;
+using Kahuna.Shared.Communication.Rest;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
@@ -139,6 +140,61 @@ public sealed class AspireKahunaClientTests
 
         Assert.Equal(HealthStatus.Unhealthy, report.Status);
         Assert.Equal(HealthStatus.Unhealthy, report.Entries["Kahuna"].Status);
+    }
+
+    // Each letter is the answer of one node: d is down, u is up but not initialized, r is ready.
+    [Theory]
+    [InlineData("r", HealthStatus.Healthy, 1)]
+    [InlineData("drr", HealthStatus.Healthy, 2)]
+    [InlineData("ddr", HealthStatus.Healthy, 3)]
+    [InlineData("udr", HealthStatus.Healthy, 3)]
+    [InlineData("ddd", HealthStatus.Unhealthy, 3)]
+    [InlineData("uud", HealthStatus.Unhealthy, 3)]
+    public async Task HealthCheckAsksEachEndpointUntilANodeCanServe(string answers, HealthStatus expected, int expectedCalls)
+    {
+        int calls = 0;
+
+        KahunaHealthCheck check = new(_ => answers[calls++] switch
+        {
+            'd' => throw new InvalidOperationException("The node is down."),
+            'u' => Task.FromResult(new KahunaClusterMembershipResponse { Initialized = false }),
+            _ => Task.FromResult(new KahunaClusterMembershipResponse { Initialized = true }),
+        }, answers.Length, TimeSpan.FromSeconds(5));
+
+        HealthCheckContext context = new()
+        {
+            Registration = new HealthCheckRegistration("Kahuna", check, HealthStatus.Unhealthy, tags: null),
+        };
+
+        HealthCheckResult result = await check.CheckHealthAsync(context, TestContext.Current.CancellationToken);
+
+        Assert.Equal(expected, result.Status);
+        Assert.Equal(expectedCalls, calls);
+    }
+
+    [Fact]
+    public async Task HealthCheckDoesNotWaitForANodeThatDoesNotAnswer()
+    {
+        int calls = 0;
+
+        // The first node accepts the call and never answers, like the Aspire proxy of a stopped container.
+        KahunaHealthCheck check = new(async cancellationToken =>
+        {
+            if (calls++ == 0)
+                await Task.Delay(Timeout.Infinite, cancellationToken);
+
+            return new KahunaClusterMembershipResponse { Initialized = true };
+        }, endpoints: 3, TimeSpan.FromMilliseconds(50));
+
+        HealthCheckContext context = new()
+        {
+            Registration = new HealthCheckRegistration("Kahuna", check, HealthStatus.Unhealthy, tags: null),
+        };
+
+        HealthCheckResult result = await check.CheckHealthAsync(context, TestContext.Current.CancellationToken);
+
+        Assert.Equal(HealthStatus.Healthy, result.Status);
+        Assert.Equal(2, calls);
     }
 
     [Theory]

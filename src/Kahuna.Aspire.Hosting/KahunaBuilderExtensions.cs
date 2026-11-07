@@ -45,7 +45,14 @@ public static class KahunaBuilderExtensions
 
         KahunaResource resource = new(name);
 
-        return builder.AddResource(resource)
+        return builder.AddResource(resource).WithKahunaContainer(grpcPort, httpPort);
+    }
+
+    /// <summary>Sets the image, the endpoints, the health check and the telemetry of a Kahuna node.</summary>
+    internal static IResourceBuilder<T> WithKahunaContainer<T>(this IResourceBuilder<T> builder, int? grpcPort, int? httpPort)
+        where T : ContainerResource
+    {
+        return builder
             .WithImage(KahunaContainerImageTags.Image, KahunaContainerImageTags.Tag)
             .WithImageRegistry(KahunaContainerImageTags.Registry)
             .WithEndpoint(port: grpcPort, targetPort: KahunaResource.GrpcTargetPort, scheme: "http", name: KahunaResource.GrpcEndpointName)

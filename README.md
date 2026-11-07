@@ -5,7 +5,7 @@ key-value store and sequencer.
 
 | Package | Use it in | What it does |
 | --- | --- | --- |
-| [`Kahuna.Aspire.Hosting`](src/Kahuna.Aspire.Hosting) | The AppHost | Runs a Kahuna node as a container resource, with a health check and a data volume. |
+| [`Kahuna.Aspire.Hosting`](src/Kahuna.Aspire.Hosting) | The AppHost | Runs a Kahuna node or a cluster of nodes as container resources, with health checks and data volumes. |
 | [`Kahuna.Aspire.Client`](src/Kahuna.Aspire.Client) | Each service | Registers a `KahunaClient` from the connection string, with a health check, spans and metrics. |
 
 ## Quick start
@@ -26,6 +26,18 @@ Service:
 builder.AddKahunaClient("kahuna");
 ```
 
+## Cluster
+
+Use `AddKahunaCluster` in the AppHost to run several nodes. The service code does not change.
+
+```csharp
+var kahuna = builder.AddKahunaCluster("kahuna", nodes: 3).WithDataVolume();
+```
+
+The cluster is for local development only. See
+[`Kahuna.Aspire.Hosting`](src/Kahuna.Aspire.Hosting#cluster) for its methods, its health rules and its
+security limits. [`examples/ClusterExample`](examples/ClusterExample) is a small application to test it.
+
 ## What the Aspire dashboard shows
 
 - **Client spans.** One span for each operation that a `KahunaClient` sends to a node (`GetKeyValue`,
@@ -37,8 +49,7 @@ builder.AddKahunaClient("kahuna");
   The server exports them only when Aspire sets `OTEL_EXPORTER_OTLP_ENDPOINT`.
 
 The client package needs `Kahuna.Client` 1.15.1 or later. The server export needs a server image
-built from 1.15.1 or later. The hosting package pins image `kahunakv/kahuna:1.15.0` until a 1.15.1
-image is published; with that image, the node runs but sends no telemetry.
+built from 1.15.1 or later. The hosting package pins image `kahunakv/kahuna:1.15.6`.
 
 ## Sample
 
@@ -65,8 +76,7 @@ dotnet run --project samples/Kahuna.Aspire.AppHost --launch-profile http -- --Ka
 With a Kahuna checkout at `../kahuna`, the projects reference its `Kahuna.Client` and
 `Kahuna.Client.AspNetCore` source instead of the packages, so a change on both sides builds and
 tests together. Set `-p:KahunaRepoRoot=<path>` for another location, or `-p:UseLocalKahuna=false`
-to use the packages. Without the checkout, the sample API also needs `Kahuna.Client.AspNetCore`
-1.15.1, which is not on NuGet yet; the integration packages and their tests build without it.
+to use the packages.
 
 ```bash
 dotnet build Kahuna.Aspire.slnx
@@ -74,4 +84,5 @@ dotnet test tests/Kahuna.Aspire.Hosting.Tests
 dotnet test tests/Kahuna.Aspire.Client.Tests
 ```
 
-The tests need no Docker and no running node.
+These two test projects need no Docker and no running node. `tests/Kahuna.Aspire.Cluster.Tests` starts
+the cluster example with real containers, so it needs Docker.

@@ -94,9 +94,11 @@ public static class AspireKahunaClientExtensions
         {
             builder.Services.AddHealthChecks().Add(new HealthCheckRegistration(
                 serviceKey is null ? "Kahuna" : $"Kahuna_{connectionName}",
-                services => new KahunaHealthCheck(serviceKey is null
-                    ? services.GetRequiredService<KahunaClient>()
-                    : services.GetRequiredKeyedService<KahunaClient>(serviceKey)),
+                services => new KahunaHealthCheck(
+                    serviceKey is null
+                        ? services.GetRequiredService<KahunaClient>()
+                        : services.GetRequiredKeyedService<KahunaClient>(serviceKey),
+                    endpoints.Length),
                 failureStatus: null,
                 tags: null,
                 timeout: settings.HealthCheckTimeout));
