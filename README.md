@@ -110,3 +110,7 @@ scripts/set-version.sh 0.2.0 --dry-run   # show what would change, touch nothing
 
 The script writes the packages to `nupkg/`. They always depend on the released `Kahuna.Client`
 package, also when a local checkout is present. The script does not upload them.
+
+## License
+
+Kahuna.Aspire is released under the MIT License. See [LICENSE](LICENSE).
