@@ -3,10 +3,24 @@
 .NET Aspire integrations for [Kahuna](https://github.com/kahunakv/kahuna), a distributed lock manager,
 key-value store and sequencer.
 
-| Package | Use it in | What it does |
-| --- | --- | --- |
-| [`Kahuna.Aspire.Hosting`](src/Kahuna.Aspire.Hosting) | The AppHost | Runs a Kahuna node or a cluster of nodes as container resources, with health checks and data volumes. |
-| [`Kahuna.Aspire.Client`](src/Kahuna.Aspire.Client) | Each service | Registers a `KahunaClient` from the connection string, with a health check, spans and metrics. |
+| Package | NuGet | Use it in | What it does |
+| --- | --- | --- | --- |
+| [`Kahuna.Aspire.Hosting`](src/Kahuna.Aspire.Hosting) | [![NuGet](https://img.shields.io/nuget/v/Kahuna.Aspire.Hosting.svg)](https://www.nuget.org/packages/Kahuna.Aspire.Hosting) | The AppHost | Runs a Kahuna node or a cluster of nodes as container resources, with health checks and data volumes. |
+| [`Kahuna.Aspire.Client`](src/Kahuna.Aspire.Client) | [![NuGet](https://img.shields.io/nuget/v/Kahuna.Aspire.Client.svg)](https://www.nuget.org/packages/Kahuna.Aspire.Client) | Each service | Registers a `KahunaClient` from the connection string, with a health check, spans and metrics. |
+
+## Install
+
+In the AppHost project:
+
+```bash
+dotnet add package Kahuna.Aspire.Hosting
+```
+
+In each service project:
+
+```bash
+dotnet add package Kahuna.Aspire.Client
+```
 
 ## Quick start
 
