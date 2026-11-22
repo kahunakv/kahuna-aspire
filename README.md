@@ -63,7 +63,7 @@ security limits. [`examples/ClusterExample`](examples/ClusterExample) is a small
   The server exports them only when Aspire sets `OTEL_EXPORTER_OTLP_ENDPOINT`.
 
 The client package needs `Kahuna.Client` 1.15.1 or later. The server export needs a server image
-built from 1.15.1 or later. The hosting package pins image `kahunakv/kahuna:1.15.6`.
+built from 1.15.1 or later. The hosting package pins image `kahunakv/kahuna:1.17.3`.
 
 ## Sample
 

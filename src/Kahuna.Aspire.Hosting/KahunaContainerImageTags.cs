@@ -20,5 +20,5 @@ internal static class KahunaContainerImageTags
     /// The pinned server version. Change it together with the Kahuna.Client version, so the client and
     /// the server in one AppHost come from the same release.
     /// </summary>
-    public const string Tag = "1.15.6";
+    public const string Tag = "1.17.3";
 }

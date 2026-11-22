@@ -18,11 +18,11 @@
          package. Pass -p:UseLocalKahuna=false to force the package. -->
     <KahunaRepoRoot Condition="'$(KahunaRepoRoot)' == ''">$(MSBuildThisFileDirectory)../kahuna/</KahunaRepoRoot>
     <UseLocalKahuna Condition="'$(UseLocalKahuna)' == '' and Exists('$(KahunaRepoRoot)Kahuna.Client/Kahuna.Client.csproj')">true</UseLocalKahuna>
-    <KahunaPackageVersion>1.15.6</KahunaPackageVersion>
+    <KahunaPackageVersion>1.17.3</KahunaPackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
-    <Version>1.15.6</Version>
+    <Version>1.17.3</Version>
     <Authors>Andres Gutierrez</Authors>
     <Company>Kahuna KV</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
